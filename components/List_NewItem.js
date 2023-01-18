@@ -71,7 +71,7 @@ export default function List_NewItem() {
                     name={'item'}
                     placeholder={'Item'}
                     className={'col-span-8 border-2 border-lime-200 rounded-lg p-1'}
-                    enterKeyHint={'next'}
+                    enterKeyHint={'go'}
                 />
                 <input
                     type="number"
@@ -79,7 +79,7 @@ export default function List_NewItem() {
                     name={'price'}
                     placeholder={'Price'}
                     className={'col-span-4 border-2 border-lime-200 rounded-lg p-1'}
-                    enterKeyHint={'go'}
+                    enterKeyHint={'next'}
                 />
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
@@ -96,7 +96,7 @@ export default function List_NewItem() {
                     defaultValue={1}
                     placeholder={'Qty'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
-                    enterKeyHint={'go'}
+                    enterKeyHint={'next'}
                 />
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
@@ -124,7 +124,7 @@ export default function List_NewItem() {
                     defaultValue={settings.baseDiscount}
                     placeholder={'-D%'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
-                    enterKeyHint={'go'}
+                    enterKeyHint={'next'}
                 />
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
@@ -150,7 +150,7 @@ export default function List_NewItem() {
                     defaultValue={settings.baseTax}
                     placeholder={'+T%'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
-                    enterKeyHint={'go'}
+                    enterKeyHint={'next'}
                 />
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
