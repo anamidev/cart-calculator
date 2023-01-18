@@ -1,17 +1,17 @@
 import {BsBagPlus} from "react-icons/bs";
 import {useDispatch, useSelector} from "react-redux";
-import {shopActions} from "@/redux/slices/shop";
+import {cartActions} from "@/redux/slices/cart";
 import {useRef} from "react";
 
-export default function NewItem() {
+export default function List_NewItem() {
     const formRef = useRef();
     const dispatch = useDispatch();
-    const {settings} = useSelector(state => state.shop);
+    const {settings} = useSelector(state => state.cart);
     
     const addItem = (e) => {
         e.preventDefault();
         const {item, quantity, price, discount, tax} = e.target;
-        dispatch(shopActions.addCartItem({
+        dispatch(cartActions.list_addItem({
             item: item.value,
             quantity: quantity.value,
             price: price.value,
@@ -20,41 +20,47 @@ export default function NewItem() {
             id: Date.now()
         }));
         e.target.reset();
+        e.target.item.focus();
     }
-    const icQty = () => {
-        if (!formRef.current.quantity.value) {
-            formRef.current.quantity.value = 2;
-        } else {
-            formRef.current.quantity.value = Number(formRef.current.quantity.value) + 1;
-        }
+    
+    const increaseQuantity = () => {
+        formRef.current.quantity.focus();
+        formRef.current.quantity.value = Number(formRef.current.quantity.value) + 1;
     }
-    const dcQty = () => {
+    const decreaseQuantity = () => {
+        formRef.current.quantity.focus();
         if (formRef.current.quantity.valueAsNumber > 1) {
             formRef.current.quantity.value = Number(formRef.current.quantity.value) - 1;
         }
     }
-    const icDc = () => {
+    
+    const increaseDiscount = () => {
+        formRef.current.discount.focus();
         if (!formRef.current.discount.value) {
             formRef.current.discount.value = 1;
         } else if (formRef.current.discount.valueAsNumber < 100) {
             formRef.current.discount.value = Number(formRef.current.discount.value) + 1;
         }
     }
-    const dcDc = () => {
+    const decreaseDiscount = () => {
+        formRef.current.discount.focus();
         if (formRef.current.discount.valueAsNumber > 0) {
             formRef.current.discount.value = Number(formRef.current.discount.value) - 1;
         }
     }
-    const icTx = () => {
+    
+    const increaseTax = () => {
+        formRef.current.tax.focus();
         formRef.current.tax.value = Number(formRef.current.tax.value) + 1;
     }
-    const dcTx = () => {
+    const decreaseTax = () => {
+        formRef.current.tax.focus();
         formRef.current.tax.value = Number(formRef.current.tax.value) - 1;
     }
     
     return (
         <form
-            className={'flex flex-col items-center max-w-lg m-auto px-4 py-2'}
+            className={'flex flex-col items-center'}
             onSubmit={addItem}
             ref={formRef}
         >
@@ -65,31 +71,37 @@ export default function NewItem() {
                     name={'item'}
                     placeholder={'Item'}
                     className={'col-span-8 border-2 border-lime-200 rounded-lg p-1'}
+                    enterKeyHint={'next'}
                 />
                 <input
                     type="number"
+                    step={'0.01'}
                     name={'price'}
                     placeholder={'Price'}
                     className={'col-span-4 border-2 border-lime-200 rounded-lg p-1'}
+                    enterKeyHint={'go'}
                 />
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
                     type={'button'}
-                    onClick={dcQty}
+                    onClick={decreaseQuantity}
                 >
                     -
                 </button>
                 <input
                     type="number"
+                    step={1}
                     name={'quantity'}
                     min={1}
-                    placeholder={'1'}
+                    defaultValue={1}
+                    placeholder={'Qty'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
+                    enterKeyHint={'go'}
                 />
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
                     type={'button'}
-                    onClick={icQty}
+                    onClick={increaseQuantity}
                 >
                     +
                 </button>
@@ -99,22 +111,25 @@ export default function NewItem() {
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
                     type={'button'}
-                    onClick={dcDc}
+                    onClick={decreaseDiscount}
                 >
                     -
                 </button>
                 <input
                     type="number"
+                    step={0.01}
                     name={'discount'}
                     min={0}
                     max={100}
-                    placeholder={`${settings.discount}`}
+                    defaultValue={settings.baseDiscount}
+                    placeholder={'-D%'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
+                    enterKeyHint={'go'}
                 />
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
                     type={'button'}
-                    onClick={icDc}
+                    onClick={increaseDiscount}
                 >
                     +
                 </button>
@@ -124,26 +139,29 @@ export default function NewItem() {
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
                     type={'button'}
-                    onClick={dcTx}
+                    onClick={decreaseTax}
                 >
                     -
                 </button>
                 <input
                     type="number"
+                    step={0.01}
                     name={'tax'}
-                    placeholder={`${settings.tax}`}
+                    defaultValue={settings.baseTax}
+                    placeholder={'+T%'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
+                    enterKeyHint={'go'}
                 />
                 <button
                     className={'bg-lime-200 col-span-1 rounded-lg p-1'}
                     type={'button'}
-                    onClick={icTx}
+                    onClick={increaseTax}
                 >
                     +
                 </button>
             </div>
             
-            <div className={'pt-2'}>
+            <div className={'py-2 hidden'}>
                 <button
                     className={'w-16 h-10 bg-lime-300 rounded-full'}
                     type={'submit'}
