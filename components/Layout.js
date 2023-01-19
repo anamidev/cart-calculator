@@ -1,12 +1,9 @@
-import Footer from "@/components/Footer";
-
 export default function Layout({children}) {
     return (
-        <div className={'flex flex-col h-screen max-w-lg mx-auto'}>
-            <main className={'p-4 grow overflow-scroll'}>
+        <div className={'max-w-md mx-auto'}>
+            <main className={'p-2 flex flex-col h-screen'}>
                 {children}
             </main>
-            <Footer/>
         </div>
     )
 }

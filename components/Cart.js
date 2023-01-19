@@ -1,12 +1,11 @@
-import {useSelector} from "react-redux";
-import Cart_Item from "@/components/Cart_Item";
+import List_Header from "@/components/List_Header";
+import List from "@/components/List";
 
 export default function Cart() {
-    const {items} = useSelector(state => state.shop.cart);
-    
     return (
-        <div className={'flex flex-col-reverse'}>
-            {items.map(item => <Cart_Item key={item.id} item={item}/>)}
-        </div>
+        <>
+            <List_Header/>
+            <List/>
+        </>
     )
 }
