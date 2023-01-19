@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {roundNum} from "@/utils/roundNum";
 
 const initialState = {
     settings: {
@@ -18,26 +19,25 @@ const cartSlice = createSlice({
     name: 'Cart',
     initialState,
     reducers: {
-        list_addItem(state, {payload}) {
-            const item = {
+        list_addItem(state, {payload: {item, price, quantity, discount, tax}}) {
+            const newItem = {
                 id: String(Date.now()),
-                item: payload.item || `Cart item ${state.list.items.length + 1}`,
-                price: Number(payload.price) || 0.00,
-                quantity: Number(payload.quantity),
-                discount: Number(payload.discount),
-                tax: Number(payload.tax),
-                priceTotal: 0,
-            };
-            item.priceTotal = (item.price - (item.price * item.discount/100) + (item.price * item.tax/100)) * item.quantity;
-            
-            state.list.items.push(item);
-            state.list.total.price += item.priceTotal;
+                item: item || `Cart item ${state.list.items.length + 1}`,
+                price,
+                quantity,
+                discount,
+                tax,
+            }
+            newItem.priceTotal = roundNum((newItem.price - (newItem.price * newItem.discount/100) + (newItem.price * newItem.tax/100)) * newItem.quantity);
+
+            state.list.items.push(newItem);
+            state.list.total.price = roundNum(state.list.total.price + newItem.priceTotal);
             state.list.total.items += 1;
         },
         list_deleteItem(state, {payload}) {
             state.list.items = state.list.items.filter(item => item.id !== payload.id);
             
-            state.list.total.price -= payload.priceTotal;
+            state.list.total.price = roundNum(state.list.total.price - payload.priceTotal);
             state.list.total.items -= 1;
         },
     }

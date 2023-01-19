@@ -2,25 +2,56 @@ import {BsBagPlus} from "react-icons/bs";
 import {useDispatch, useSelector} from "react-redux";
 import {cartActions} from "@/redux/slices/cart";
 import {useRef} from "react";
+import {roundNum} from "@/utils/roundNum";
 
 export default function List_NewItem() {
     const formRef = useRef();
     const dispatch = useDispatch();
     const {settings} = useSelector(state => state.cart);
     
+    const validateForm = (e) => {
+        const {quantity, price, discount, tax} = e.target;
+        if (isNaN(Number(price.value))) {
+            e.target.price.focus();
+            return false;
+        }
+        if (isNaN(Number(quantity.value))) {
+            e.target.quantity.focus();
+            return false;
+        }
+        if (isNaN(Number(discount.value))) {
+            e.target.discount.focus();
+            return false;
+        }
+        if (isNaN(Number(tax.value))) {
+            e.target.tax.focus();
+            return false;
+        }
+        return true;
+    }
     const addItem = (e) => {
         e.preventDefault();
-        const {item, quantity, price, discount, tax} = e.target;
-        dispatch(cartActions.list_addItem({
-            item: item.value,
-            quantity: quantity.value,
-            price: price.value,
-            discount: discount.value,
-            tax: tax.value,
-            id: Date.now()
-        }));
-        e.target.reset();
-        e.target.item.focus();
+        const isValid = validateForm(e);
+        if (isValid) {
+            const {item, quantity, price, discount, tax} = e.target;
+            dispatch(cartActions.list_addItem({
+                item: item.value,
+                quantity: roundNum(quantity.value),
+                price: roundNum(price.value),
+                discount: roundNum(discount.value),
+                tax: roundNum(tax.value),
+                id: Date.now()
+            }));
+            e.target.reset();
+            e.target.item.focus();
+        }
+    }
+    
+    const nextInput = (e) => {
+        e.preventDefault();
+        if (e.key === 'Enter') {
+            formRef.current.price.focus();
+        }
     }
     
     const increaseQuantity = () => {
@@ -29,24 +60,16 @@ export default function List_NewItem() {
     }
     const decreaseQuantity = () => {
         formRef.current.quantity.focus();
-        if (formRef.current.quantity.valueAsNumber > 1) {
-            formRef.current.quantity.value = Number(formRef.current.quantity.value) - 1;
-        }
+        formRef.current.quantity.value = Number(formRef.current.quantity.value) - 1;
     }
     
     const increaseDiscount = () => {
         formRef.current.discount.focus();
-        if (!formRef.current.discount.value) {
-            formRef.current.discount.value = 1;
-        } else if (formRef.current.discount.valueAsNumber < 100) {
-            formRef.current.discount.value = Number(formRef.current.discount.value) + 1;
-        }
+        formRef.current.discount.value = Number(formRef.current.discount.value) + 1;
     }
     const decreaseDiscount = () => {
         formRef.current.discount.focus();
-        if (formRef.current.discount.valueAsNumber > 0) {
-            formRef.current.discount.value = Number(formRef.current.discount.value) - 1;
-        }
+        formRef.current.discount.value = Number(formRef.current.discount.value) - 1;
     }
     
     const increaseTax = () => {
@@ -72,11 +95,12 @@ export default function List_NewItem() {
                     placeholder={'Item'}
                     className={'col-span-8 border-2 border-lime-200 rounded-lg p-1'}
                     enterKeyHint={'next'}
+                    onKeyDown={nextInput}
                 />
                 <input
-                    type="number"
-                    step={'0.01'}
+                    type="text"
                     name={'price'}
+                    inputMode={'decimal'}
                     placeholder={'Price'}
                     className={'col-span-4 border-2 border-lime-200 rounded-lg p-1'}
                     enterKeyHint={'go'}
@@ -89,10 +113,9 @@ export default function List_NewItem() {
                     -
                 </button>
                 <input
-                    type="number"
-                    step={1}
+                    type="text"
                     name={'quantity'}
-                    min={1}
+                    inputMode={'decimal'}
                     defaultValue={1}
                     placeholder={'Qty'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
@@ -116,11 +139,9 @@ export default function List_NewItem() {
                     -
                 </button>
                 <input
-                    type="number"
-                    step={0.01}
+                    type="text"
                     name={'discount'}
-                    min={0}
-                    max={100}
+                    inputMode={'decimal'}
                     defaultValue={settings.baseDiscount}
                     placeholder={'-D%'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
@@ -144,9 +165,9 @@ export default function List_NewItem() {
                     -
                 </button>
                 <input
-                    type="number"
-                    step={0.01}
+                    type="text"
                     name={'tax'}
+                    inputMode={'decimal'}
                     defaultValue={settings.baseTax}
                     placeholder={'+T%'}
                     className={'col-span-2 border-2 border-lime-200 rounded-lg p-1 text-center'}
