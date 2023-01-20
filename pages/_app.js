@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }) {
     return (
         <Provider store={store}>
             <Head>
-                <title>Shopping list</title>
+                <title>Cart calculator</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" type="image/png" sizes="96x96" href="/favicon/icons8-cheque-96.png"/>
             </Head>
