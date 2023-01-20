@@ -48,8 +48,8 @@ export default function List_NewItem() {
     }
     
     const nextInput = (e) => {
-        e.preventDefault();
         if (e.key === 'Enter') {
+            e.preventDefault()
             formRef.current.price.focus();
         }
     }
@@ -101,7 +101,7 @@ export default function List_NewItem() {
                     type="text"
                     name={'price'}
                     inputMode={'decimal'}
-                    placeholder={'Price'}
+                    placeholder={`Price ${settings.currency.primary.symbol}`}
                     className={'col-span-4 border-2 border-lime-200 rounded-lg p-1'}
                     enterKeyHint={'go'}
                 />
