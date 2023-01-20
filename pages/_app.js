@@ -10,6 +10,7 @@ export default function App({ Component, pageProps }) {
             <Head>
                 <title>Shopping list</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <link rel="icon" type="image/png" sizes="96x96" href="/favicon/icons8-cheque-96.png"/>
             </Head>
             <Layout>
                 <Component {...pageProps} />
