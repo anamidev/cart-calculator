@@ -2,6 +2,7 @@ import {useSelector} from "react-redux";
 
 export default function List_Total() {
     const {total} = useSelector(state => state.cart.list);
+    const {currency} = useSelector(state => state.cart.settings);
     return (
         <div className={'p-2 grid grid-cols-8 gap-0.5'}>
             <div className={'col-span-1'}>
@@ -11,8 +12,19 @@ export default function List_Total() {
                 {total.items} item(s)
             </div>
             <div className={'col-span-4 text-right'}>
-                {total.price}
+                {total.price + ' ' + currency.primary.symbol}
             </div>
+    
+            {
+                currency.secondary.rate !== 0
+                    ? (
+                        <div className={'col-start-5 col-span-4 text-right text-neutral-400'}>
+                            {total.priceSecondary + ' ' + currency.secondary.symbol}
+                        </div>
+                    )
+                    : null
+            }
+            
         </div>
     )
 }

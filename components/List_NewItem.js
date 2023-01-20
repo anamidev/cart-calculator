@@ -2,7 +2,7 @@ import {BsBagPlus} from "react-icons/bs";
 import {useDispatch, useSelector} from "react-redux";
 import {cartActions} from "@/redux/slices/cart";
 import {useRef} from "react";
-import {roundNum} from "@/utils/roundNum";
+import {roundNum2} from "@/utils/roundNum2";
 
 export default function List_NewItem() {
     const formRef = useRef();
@@ -36,10 +36,10 @@ export default function List_NewItem() {
             const {item, quantity, price, discount, tax} = e.target;
             dispatch(cartActions.list_addItem({
                 item: item.value,
-                quantity: roundNum(quantity.value),
-                price: roundNum(price.value),
-                discount: roundNum(discount.value),
-                tax: roundNum(tax.value),
+                quantity: roundNum2(quantity.value),
+                price: roundNum2(price.value),
+                discount: roundNum2(discount.value),
+                tax: roundNum2(tax.value),
                 id: Date.now()
             }));
             e.target.reset();
@@ -48,8 +48,8 @@ export default function List_NewItem() {
     }
     
     const nextInput = (e) => {
-        e.preventDefault();
         if (e.key === 'Enter') {
+            e.preventDefault()
             formRef.current.price.focus();
         }
     }
@@ -101,7 +101,7 @@ export default function List_NewItem() {
                     type="text"
                     name={'price'}
                     inputMode={'decimal'}
-                    placeholder={'Price'}
+                    placeholder={`Price ${settings.currency.primary.symbol}`}
                     className={'col-span-4 border-2 border-lime-200 rounded-lg p-1'}
                     enterKeyHint={'go'}
                 />
