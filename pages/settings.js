@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {SlCheck, SlRefresh} from "react-icons/sl";
 import {cartActions} from "@/redux/slices/cart";
-import {roundNum} from "@/utils/roundNum";
+import {roundNum2, roundNum4} from "@/utils/roundNum2";
 import {useState} from "react";
 
 export default function Settings() {
@@ -37,10 +37,10 @@ export default function Settings() {
         if (isValid) {
             const {baseDiscount, baseTax, primarySymbol, secondaryRate, secondarySymbol} = e.target;
             const newSettings = {
-                baseDiscount: roundNum(baseDiscount.value),
-                baseTax: roundNum(baseTax.value),
+                baseDiscount: roundNum2(baseDiscount.value),
+                baseTax: roundNum2(baseTax.value),
                 primarySymbol: primarySymbol.value,
-                secondaryRate: roundNum(secondaryRate.value),
+                secondaryRate: roundNum4(secondaryRate.value),
                 secondarySymbol: secondarySymbol.value,
             };
             dispatch(cartActions.settings_set(newSettings))

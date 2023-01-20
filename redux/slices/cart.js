@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {roundNum} from "@/utils/roundNum";
+import {roundNum2, roundNum4} from "@/utils/roundNum2";
 
 const initialState = {
     settings: {
@@ -39,26 +39,26 @@ const cartSlice = createSlice({
                 discount,
                 tax,
             }
-            newItem.priceTotal = roundNum((newItem.price - (newItem.price * newItem.discount/100) + (newItem.price * newItem.tax/100)) * newItem.quantity);
-            newItem.priceTotalSecondary = roundNum(newItem.priceTotal * state.settings.currency.secondary.rate);
+            newItem.priceTotal = roundNum2((newItem.price - (newItem.price * newItem.discount/100) + (newItem.price * newItem.tax/100)) * newItem.quantity);
+            newItem.priceTotalSecondary = roundNum2(newItem.priceTotal * state.settings.currency.secondary.rate);
             
             state.list.items.push(newItem);
-            state.list.total.price = roundNum(state.list.total.price + newItem.priceTotal);
+            state.list.total.price = roundNum2(state.list.total.price + newItem.priceTotal);
             state.list.total.items += 1;
-            state.list.total.priceSecondary = roundNum(state.list.total.priceSecondary + newItem.priceTotalSecondary);
+            state.list.total.priceSecondary = roundNum2(state.list.total.priceSecondary + newItem.priceTotalSecondary);
         },
         list_deleteItem(state, {payload}) {
             state.list.items = state.list.items.filter(item => item.id !== payload.id);
             
-            state.list.total.price = roundNum(state.list.total.price - payload.priceTotal);
+            state.list.total.price = roundNum2(state.list.total.price - payload.priceTotal);
             state.list.total.items -= 1;
-            state.list.total.priceSecondary = roundNum(state.list.total.priceSecondary - payload.priceTotalSecondary);
+            state.list.total.priceSecondary = roundNum2(state.list.total.priceSecondary - payload.priceTotalSecondary);
         },
         settings_set(state, {payload}) {
-            state.settings.baseTax = roundNum(payload.baseTax);
-            state.settings.baseDiscount = roundNum(payload.baseDiscount);
+            state.settings.baseTax = roundNum2(payload.baseTax);
+            state.settings.baseDiscount = roundNum2(payload.baseDiscount);
             state.settings.currency.primary.symbol = payload.primarySymbol;
-            state.settings.currency.secondary.rate = roundNum(payload.secondaryRate);
+            state.settings.currency.secondary.rate = roundNum4(payload.secondaryRate);
             state.settings.currency.secondary.symbol = payload.secondarySymbol;
             
             try {
@@ -68,9 +68,9 @@ const cartSlice = createSlice({
             }
             
             state.list.items.forEach(item => {
-                item.priceTotalSecondary = roundNum(item.priceTotal * state.settings.currency.secondary.rate);
+                item.priceTotalSecondary = roundNum2(item.priceTotal * state.settings.currency.secondary.rate);
             })
-            state.list.total.priceSecondary = roundNum(state.list.total.price * state.settings.currency.secondary.rate);
+            state.list.total.priceSecondary = roundNum2(state.list.total.price * state.settings.currency.secondary.rate);
         },
         settings_get(state) {
             try {
