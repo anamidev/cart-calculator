@@ -25,3 +25,6 @@ Assuming we calculate our cart in USD ($), we want to have our secondary prices 
 - secondary currency - 0.92 (set)
 
 Symbols can be set for both currencies for better visuals. Symbols support up to 3 characters, so it can be set as '$' or 'USD'.
+
+![image](https://user-images.githubusercontent.com/57418284/214973696-11392333-7451-4c98-9aeb-c9c65f7211f4.png)
+
