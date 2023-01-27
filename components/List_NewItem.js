@@ -42,6 +42,7 @@ export default function List_NewItem() {
                 tax: roundNum2(tax.value),
                 id: Date.now()
             }));
+            dispatch(cartActions.list_save());
             e.target.reset();
             e.target.item.focus();
         }

@@ -1,4 +1,5 @@
 import {useSelector} from "react-redux";
+import List_ClearItems from "@/components/List_ClearItems";
 
 export default function List_Total() {
     const {total} = useSelector(state => state.cart.list);
@@ -14,7 +15,6 @@ export default function List_Total() {
             <div className={'col-span-4 text-right'}>
                 {total.price + ' ' + currency.primary.symbol}
             </div>
-    
             {
                 currency.secondary.rate !== 0
                     ? (
@@ -24,7 +24,9 @@ export default function List_Total() {
                     )
                     : null
             }
-            
+            <div className={'col-start-3 col-span-4'}>
+                <List_ClearItems/>
+            </div>
         </div>
     )
 }

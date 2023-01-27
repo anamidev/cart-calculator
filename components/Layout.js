@@ -5,9 +5,21 @@ import {useEffect} from "react";
 
 export default function Layout({children}) {
     const dispatch = useDispatch();
+    
     useEffect(() => {
         dispatch(cartActions.settings_get());
+        dispatch(cartActions.list_retrieve());
     }, [dispatch])
+    
+    // useEffect(() => {
+    //     const saveCartTimer = setInterval(() => {
+    //         dispatch(cartActions.list_save());
+    //     }, 10000)
+    //
+    //     return () => {
+    //         clearInterval(saveCartTimer)
+    //     }
+    // }, [dispatch])
     
     return (
         <div className={'max-w-md max-h-screen mx-auto'}>

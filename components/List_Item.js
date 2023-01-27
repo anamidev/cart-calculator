@@ -6,13 +6,14 @@ export default function List_Item({item}) {
     const {currency} = useSelector(state => state.cart.settings);
     const dispatch = useDispatch();
     const deleteItem = () => {
-        dispatch(cartActions.list_deleteItem(item))
+        dispatch(cartActions.list_deleteItem(item));
+        dispatch(cartActions.list_save());
     }
     
     return (
         <div className={'grid grid-cols-8 gap-0.5 bg-lime-50 rounded-lg border-2 border-lime-100 mb-2'}>
             <button
-                className={'col-span-1 row-span-3 p-1'}
+                className={'col-span-1 row-span-3 p-1 bg-red-100'}
                 onClick={deleteItem}
             >
                 <BsTrash className={'text-red-500 w-full h-6'}/>

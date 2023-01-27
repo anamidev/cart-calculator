@@ -53,7 +53,38 @@ const cartSlice = createSlice({
             state.list.total.price = roundNum2(state.list.total.price - payload.priceTotal);
             state.list.total.items -= 1;
             state.list.total.priceSecondary = roundNum2(state.list.total.priceSecondary - payload.priceTotalSecondary);
+            
+            cartActions.list_save();
         },
+        list_deleteAllItems(state) {
+            state.list = {
+                items: [],
+                total: {
+                    price: 0,
+                    items: 0,
+                    priceSecondary: 0,
+                }
+            };
+        },
+        
+        list_save(state) {
+            try {
+                localStorage.setItem('cart-list', JSON.stringify(state.list))
+            } catch (e) {
+                console.log('Unable to save cart list to local storage.', e);
+            }
+        },
+        list_retrieve(state) {
+            try {
+                const localList = localStorage.getItem('cart-list');
+                if (localList) {
+                    state.list = JSON.parse(localList);
+                }
+            } catch (e) {
+                console.log('Unable to retrieve cart list form local storage.', e);
+            }
+        },
+        
         settings_set(state, {payload}) {
             state.settings.baseTax = roundNum2(payload.baseTax);
             state.settings.baseDiscount = roundNum2(payload.baseDiscount);
@@ -81,7 +112,7 @@ const cartSlice = createSlice({
             } catch (e) {
                 console.log('Unable to get settings form local storage.', e);
             }
-        }
+        },
     }
 });
 
