@@ -19,7 +19,7 @@ Secondary currency rate is 0 by default and is not visible in the cart. When the
 
 Example:
 
-Assuming we calculate our cart in USD ($), we want to have our secondary prices in EUR (€). We must check the USD ($) rate to EUR (€) and set the secondary rate accordingly.
+Assuming we calculate our cart in USD, we want to have our secondary prices in EUR. We must check the USD rate to EUR and set the secondary rate accordingly.
 
 - primary currency - 1 (default)
 - secondary currency - 0.92 (set)
