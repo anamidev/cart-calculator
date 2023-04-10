@@ -38,7 +38,7 @@ export default function List_NewItem() {
         e.preventDefault();
         const isValid = validateForm(e);
         if (isValid) {
-            const item = (e.currentTarget.item as HTMLInputElement).value;
+            const item = (e.currentTarget.item as HTMLInputElement).value || 'Cart item';
             const quantity = (e.currentTarget.quantity as HTMLInputElement).value as unknown as number;
             const price = (e.currentTarget.price as HTMLInputElement).value as unknown as number;
             const discount = (e.currentTarget.discount as HTMLInputElement).value as unknown as number;

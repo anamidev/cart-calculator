@@ -67,47 +67,14 @@ const cartSlice = createSlice({
     name: 'Cart',
     initialState,
     reducers: {
-        // TODO move this logic to front
-        // list_addItem(state, { payload: { item, price, quantity, discount, tax } }) {
-        //     const newItem = {
-        //         id: String(Date.now()),
-        //         item: item || `Cart item ${state.list.items.length + 1}`,
-        //         price,
-        //         quantity,
-        //         discount,
-        //         tax,
-        //     };
-        //     newItem.priceTotal = roundNum2(
-        //         (newItem.price -
-        //             (newItem.price * newItem.discount) / 100 +
-        //             (newItem.price * newItem.tax) / 100) *
-        //             newItem.quantity
-        //     );
-        //     newItem.priceTotalSecondary = roundNum2(
-        //         newItem.priceTotal * state.settings.currency.secondary.rate
-        //     );
-
-        //     state.list.items.push(newItem);
-        //     state.list.total.price = roundNum2(state.list.total.price + newItem.priceTotal);
-        //     state.list.total.items += 1;
-        //     state.list.total.priceSecondary = roundNum2(
-        //         state.list.total.priceSecondary + newItem.priceTotalSecondary
-        //     );
-        // },
         list_addItem(state, action: PayloadAction<CartItem>) {
             state.list.items.push(action.payload);
+            state.list.total.price = roundNum2(state.list.total.price + action.payload.priceTotal);
+            state.list.total.items += 1;
+            state.list.total.priceSecondary = roundNum2(
+                state.list.total.priceSecondary + action.payload.priceTotalSecondary
+            );
         },
-        // list_deleteItem(state, { payload }) {
-        //     state.list.items = state.list.items.filter((item) => item.id !== payload.id);
-
-        //     state.list.total.price = roundNum2(state.list.total.price - payload.priceTotal);
-        //     state.list.total.items -= 1;
-        //     state.list.total.priceSecondary = roundNum2(
-        //         state.list.total.priceSecondary - payload.priceTotalSecondary
-        //     );
-
-        //     cartActions.list_save();
-        // },
         list_deleteItem(state, action: PayloadAction<CartItem>) {
             state.list.items = state.list.items.filter((item) => item.id !== action.payload.id);
 
@@ -148,33 +115,13 @@ const cartSlice = createSlice({
             }
         },
 
-        // settings_set(state, { payload }) {
-        //     state.settings.baseTax = roundNum2(payload.baseTax);
-        //     state.settings.baseDiscount = roundNum2(payload.baseDiscount);
-        //     state.settings.currency.primary.symbol = payload.primarySymbol;
-        //     state.settings.currency.secondary.rate = roundNum4(payload.secondaryRate);
-        //     state.settings.currency.secondary.symbol = payload.secondarySymbol;
-
-        //     try {
-        //         localStorage.setItem('cart-settings', JSON.stringify(state.settings));
-        //     } catch (e) {
-        //         console.log('Unable to set settings to local storage.', e);
-        //     }
-
-        //     state.list.items.forEach((item) => {
-        //         item.priceTotalSecondary = roundNum2(
-        //             item.priceTotal * state.settings.currency.secondary.rate
-        //         );
-        //     });
-        //     state.list.total.priceSecondary = roundNum2(
-        //         state.list.total.price * state.settings.currency.secondary.rate
-        //     );
-        // },
         settings_set(state, action: PayloadAction<CartSettings>) {
             state.settings.baseTax = roundNum2(action.payload.baseTax);
             state.settings.baseDiscount = roundNum2(action.payload.baseDiscount);
             state.settings.currency.primary.symbol = action.payload.currency.primary.symbol;
-            state.settings.currency.secondary.rate = roundNum4(action.payload.currency.secondary.rate);
+            state.settings.currency.secondary.rate = roundNum4(
+                action.payload.currency.secondary.rate
+            );
             state.settings.currency.secondary.symbol = action.payload.currency.secondary.symbol;
 
             try {
